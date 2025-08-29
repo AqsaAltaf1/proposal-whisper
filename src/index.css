@@ -5,50 +5,51 @@
 /* Glassmorphism Design System - Professional Freelancer App */
 @layer base {
   :root {
-    /* Glassmorphism Background Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(240, 100%, 97%) 0%, hsl(220, 100%, 95%) 50%, hsl(240, 50%, 92%) 100%);
-    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(220, 70%, 50%) 0%, hsl(240, 70%, 60%) 100%);
+    /* Glassmorphism Background Gradients - Dark Grey/Black Theme */
+    --gradient-primary: linear-gradient(135deg, hsl(0, 0%, 8%) 0%, hsl(0, 0%, 12%) 50%, hsl(0, 0%, 16%) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(0, 0%, 25%) 0%, hsl(0, 0%, 35%) 100%);
     
-    /* Core Colors - HSL */
-    --background: 240 100% 97%;
-    --foreground: 240 10% 15%;
+    /* Core Colors - Dark Grey/Black HSL */
+    --background: 0 0% 10%;
+    --foreground: 0 0% 95%;
     
-    --glass-primary: 255 255 255 / 0.2;
-    --glass-secondary: 255 255 255 / 0.1;
-    --glass-border: 255 255 255 / 0.3;
-    --glass-text: 240 10% 15%;
-    --glass-text-muted: 240 5% 40%;
+    --glass-primary: 255 255 255 / 0.15;
+    --glass-secondary: 255 255 255 / 0.08;
+    --glass-border: 255 255 255 / 0.2;
+    --glass-text: 0 0% 95%;
+    --glass-text-muted: 0 0% 70%;
     
-    --card: 255 255 255 / 0.2;
-    --card-foreground: 240 10% 15%;
+    --card: 255 255 255 / 0.1;
+    --card-foreground: 0 0% 95%;
     
-    --primary: 220 70% 50%;
+    --primary: 0 0% 25%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 220 70% 60%;
+    --primary-glow: 0 0% 35%;
     
-    --secondary: 240 5% 95%;
-    --secondary-foreground: 240 10% 15%;
+    --secondary: 0 0% 18%;
+    --secondary-foreground: 0 0% 90%;
     
-    --muted: 240 5% 92%;
-    --muted-foreground: 240 5% 50%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
     
-    --accent: 240 70% 60%;
+    --accent: 0 0% 30%;
     --accent-foreground: 0 0% 100%;
     
     --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 100%;
     
-    --border: 255 255 255 / 0.2;
-    --input: 255 255 255 / 0.2;
-    --ring: 220 70% 50%;
+    --border: 255 255 255 / 0.15;
+    --input: 255 255 255 / 0.1;
+    --ring: 0 0% 40%;
     
     --radius: 1rem;
     
-    /* Glass Effect Shadows */
-    --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.37);
-    --shadow-glass-hover: 0 12px 40px rgba(31, 38, 135, 0.45);
-    --shadow-glow: 0 0 30px rgba(59, 130, 246, 0.3);
+    /* Glass Effect Shadows - Enhanced */
+    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.6);
+    --shadow-glass-hover: 0 16px 48px rgba(0, 0, 0, 0.8);
+    --shadow-glow: 0 0 40px rgba(255, 255, 255, 0.1);
+    --shadow-glass-intense: 0 20px 60px rgba(0, 0, 0, 0.9);
     
     /* Animations */
     --transition-glass: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -130,46 +131,52 @@
     right: 0;
     bottom: 0;
     background: 
-      radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(120, 200, 255, 0.2) 0%, transparent 50%);
+      radial-gradient(circle at 20% 80%, rgba(60, 60, 60, 0.2) 0%, transparent 60%),
+      radial-gradient(circle at 80% 20%, rgba(100, 100, 100, 0.1) 0%, transparent 60%),
+      radial-gradient(circle at 40% 40%, rgba(80, 80, 80, 0.15) 0%, transparent 60%);
     pointer-events: none;
     z-index: -1;
   }
 }
 
 @layer utilities {
-  /* Glass Morphism Components */
+  /* Enhanced Glass Morphism Components */
   .glass-card {
-    @apply bg-white/20 backdrop-blur-md border border-white/30 rounded-2xl shadow-[0_8px_32px_rgba(31,38,135,0.37)];
+    @apply bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.9)];
     transition: var(--transition-glass);
+    backdrop-filter: blur(20px) saturate(180%);
   }
   
   .glass-card-hover {
-    @apply hover:shadow-[0_12px_40px_rgba(31,38,135,0.45)] hover:scale-[1.02];
+    @apply hover:shadow-[0_25px_70px_rgba(0,0,0,0.95)] hover:scale-[1.02] hover:bg-white/15;
   }
   
   .glass-button {
-    @apply bg-white/20 backdrop-blur-md border border-white/30 rounded-xl px-6 py-3 font-medium text-foreground;
-    @apply hover:bg-white/30 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] hover:scale-105;
+    @apply bg-white/8 backdrop-blur-xl border border-white/25 rounded-2xl px-6 py-3 font-medium text-foreground;
+    @apply hover:bg-white/15 hover:shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:scale-105;
     transition: var(--transition-glass);
+    backdrop-filter: blur(16px) saturate(180%);
   }
   
   .glass-input {
-    @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-xl px-4 py-3;
-    @apply focus:bg-white/20 focus:border-primary/50 focus:ring-2 focus:ring-primary/30;
+    @apply bg-white/5 backdrop-blur-xl border border-white/15 rounded-2xl px-4 py-3;
+    @apply focus:bg-white/10 focus:border-white/30 focus:ring-2 focus:ring-white/20;
     transition: var(--transition-glass);
+    backdrop-filter: blur(16px) saturate(180%);
   }
   
   .glass-primary {
-    @apply bg-gradient-to-r from-primary to-accent text-primary-foreground rounded-xl px-6 py-3 font-semibold;
-    @apply hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] hover:scale-105;
+    @apply bg-gradient-to-r from-white/20 to-white/10 text-foreground rounded-2xl px-6 py-3 font-semibold;
+    @apply hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:scale-105 hover:from-white/25 hover:to-white/15;
+    @apply border border-white/25 backdrop-blur-xl;
     transition: var(--transition-glass);
+    backdrop-filter: blur(20px) saturate(180%);
   }
   
   .glass-floating {
-    @apply fixed bottom-6 right-6 bg-white/20 backdrop-blur-md border border-white/30 rounded-2xl p-4;
-    @apply shadow-[0_8px_32px_rgba(31,38,135,0.37)] hover:shadow-[0_12px_40px_rgba(31,38,135,0.45)];
+    @apply fixed bottom-6 right-6 bg-white/8 backdrop-blur-xl border border-white/20 rounded-3xl p-4;
+    @apply shadow-[0_20px_60px_rgba(0,0,0,0.9)] hover:shadow-[0_25px_70px_rgba(0,0,0,0.95)];
     transition: var(--transition-glass);
+    backdrop-filter: blur(20px) saturate(180%);
   }
 }

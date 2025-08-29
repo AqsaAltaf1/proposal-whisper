@@ -50,8 +50,35 @@ const JobAnalyzer = () => {
   };
 
   const generateProposal = () => {
+    if (!analysis) return;
+    
+    // Mock proposal generation - in real app this would call AI API
+    const mockProposal = {
+      coverLetter: `Dear Client,\n\nI'm excited about your ${analysis.scope} project. With my expertise in ${analysis.skills.slice(0, 3).join(', ')}, I can deliver exactly what you're looking for.\n\nMy approach includes thorough planning, regular communication, and high-quality deliverables. I've successfully completed similar projects and understand the importance of meeting deadlines while maintaining code quality.\n\nI'm available in your timezone (${analysis.timezone}) and can start immediately. Let's discuss how we can bring your vision to life.\n\nBest regards,\n[Your Name]`,
+      milestones: [
+        { title: "Project Setup & Planning", duration: "3-5 days", deliverables: ["Project architecture", "Development environment", "Timeline confirmation"] },
+        { title: "Core Development", duration: "7-10 days", deliverables: ["Main functionality", "UI implementation", "Initial testing"] },
+        { title: "Final Testing & Delivery", duration: "2-3 days", deliverables: ["Bug fixes", "Performance optimization", "Documentation"] }
+      ],
+      pricing: {
+        basic: { price: "$2,500", features: ["Core functionality", "Basic UI", "1 revision round"] },
+        standard: { price: "$3,500", features: ["Full functionality", "Responsive design", "3 revision rounds", "Basic documentation"] },
+        premium: { price: "$5,000", features: ["Everything in Standard", "Advanced features", "Unlimited revisions", "Full documentation", "3 months support"] }
+      },
+      questions: [
+        "What's your preferred communication method and frequency?",
+        "Are there any specific design preferences or brand guidelines?",
+        "Do you have any existing systems this needs to integrate with?",
+        "What's the expected user volume for this application?",
+        "Are there any compliance or security requirements to consider?"
+      ]
+    };
+    
+    // Store in localStorage for demo purposes
+    localStorage.setItem('currentProposal', JSON.stringify(mockProposal));
+    
     setShowProposal(true);
-    // This would generate the full proposal
+    alert('Proposal generated! (In a real app, this would navigate to the proposal page)');
   };
 
   return (
