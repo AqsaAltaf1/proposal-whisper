@@ -1,84 +1,80 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Target, AlertTriangle, DollarSign, Clock, User } from "lucide-react";
+import { Sparkles, Target, AlertTriangle, DollarSign, Clock, User, FileText, Briefcase, BookOpen } from "lucide-react";
+import { toast } from "sonner";
+import { aiService, type JobAnalysis } from "@/lib/aiService";
 
-interface JobAnalysis {
-  skills: string[];
-  scope: string;
-  deliverables: string[];
-  budget: string;
-  timezone: string;
-  risks: string[];
-}
+// JobAnalysis interface is now imported from aiService
 
 const JobAnalyzer = () => {
+  const navigate = useNavigate();
   const [jobPost, setJobPost] = useState("");
   const [analysis, setAnalysis] = useState<JobAnalysis | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [showProposal, setShowProposal] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const analyzeJobPost = async () => {
-    if (!jobPost.trim()) return;
+    if (!jobPost.trim()) {
+      toast.error("Please paste a job post to analyze");
+      return;
+    }
     
     setIsAnalyzing(true);
     
-    // Mock analysis - in real app this would call AI API
-    setTimeout(() => {
-      setAnalysis({
-        skills: ["React", "Node.js", "TypeScript", "API Integration", "UI/UX Design"],
-        scope: "Medium complexity project requiring full-stack development with modern technologies",
-        deliverables: [
-          "Responsive web application",
-          "REST API backend", 
-          "User authentication system",
-          "Admin dashboard",
-          "Documentation and testing"
-        ],
-        budget: "$3,000 - $5,000",
-        timezone: "EST (UTC-5)",
-        risks: [
-          "Tight deadline may require overtime",
-          "Third-party API dependencies unclear",
-          "Design requirements need clarification"
-        ]
-      });
+    try {
+      // Real AI analysis using Google Gemini (free)
+      const result = await aiService.analyzeJobPost(jobPost);
+      setAnalysis(result);
+      toast.success("Job post analyzed successfully!");
+    } catch (error) {
+      console.error("Analysis error:", error);
+      toast.error("Failed to analyze job post. Please try again.");
+    } finally {
       setIsAnalyzing(false);
-    }, 2000);
+    }
   };
 
-  const generateProposal = () => {
+  const generateProposal = async () => {
     if (!analysis) return;
     
-    // Mock proposal generation - in real app this would call AI API
-    const mockProposal = {
-      coverLetter: `Dear Client,\n\nI'm excited about your ${analysis.scope} project. With my expertise in ${analysis.skills.slice(0, 3).join(', ')}, I can deliver exactly what you're looking for.\n\nMy approach includes thorough planning, regular communication, and high-quality deliverables. I've successfully completed similar projects and understand the importance of meeting deadlines while maintaining code quality.\n\nI'm available in your timezone (${analysis.timezone}) and can start immediately. Let's discuss how we can bring your vision to life.\n\nBest regards,\n[Your Name]`,
-      milestones: [
-        { title: "Project Setup & Planning", duration: "3-5 days", deliverables: ["Project architecture", "Development environment", "Timeline confirmation"] },
-        { title: "Core Development", duration: "7-10 days", deliverables: ["Main functionality", "UI implementation", "Initial testing"] },
-        { title: "Final Testing & Delivery", duration: "2-3 days", deliverables: ["Bug fixes", "Performance optimization", "Documentation"] }
-      ],
-      pricing: {
-        basic: { price: "$2,500", features: ["Core functionality", "Basic UI", "1 revision round"] },
-        standard: { price: "$3,500", features: ["Full functionality", "Responsive design", "3 revision rounds", "Basic documentation"] },
-        premium: { price: "$5,000", features: ["Everything in Standard", "Advanced features", "Unlimited revisions", "Full documentation", "3 months support"] }
-      },
-      questions: [
-        "What's your preferred communication method and frequency?",
-        "Are there any specific design preferences or brand guidelines?",
-        "Do you have any existing systems this needs to integrate with?",
-        "What's the expected user volume for this application?",
-        "Are there any compliance or security requirements to consider?"
-      ]
-    };
+    setIsGenerating(true);
     
-    // Store in localStorage for demo purposes
-    localStorage.setItem('currentProposal', JSON.stringify(mockProposal));
-    
-    setShowProposal(true);
-    alert('Proposal generated! (In a real app, this would navigate to the proposal page)');
+    try {
+      // Real AI proposal generation using Google Gemini (free)
+      const proposalData = await aiService.generateProposal(analysis, 'Your Name');
+      
+      // Create a new proposal with unique ID
+      const proposalId = Date.now().toString();
+      const newProposal = {
+        id: proposalId,
+        jobTitle: analysis.scope.split(' ').slice(0, 5).join(' ') + ' Project',
+        ...proposalData,
+        status: 'draft' as const,
+        createdAt: new Date().toISOString(),
+      };
+      
+      // Save to proposals list
+      const savedProposals = JSON.parse(localStorage.getItem('proposals') || '[]');
+      savedProposals.push(newProposal);
+      localStorage.setItem('proposals', JSON.stringify(savedProposals));
+      
+      // Store current proposal for immediate viewing
+      localStorage.setItem('currentProposal', JSON.stringify(proposalData));
+      
+      toast.success('AI-powered proposal generated successfully!');
+      
+      // Navigate to the proposal view
+      navigate(`/proposal/${proposalId}`);
+    } catch (error) {
+      console.error("Proposal generation error:", error);
+      toast.error("Failed to generate proposal. Please try again.");
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -87,19 +83,47 @@ const JobAnalyzer = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <div className="glass-card glass-card-hover p-8 mb-8">
-            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 bg-clip-text text-transparent">
               Freelancer Proposal Generator
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
               Paste any Upwork job post and get an AI-powered analysis with professional proposal generation
             </p>
+            
+            {/* Navigation Buttons */}
+            <div className="flex justify-center gap-4 flex-wrap">
+              <Button 
+                onClick={() => navigate('/proposals')}
+                className="glass-button"
+                size="sm"
+              >
+                <FileText className="h-4 w-4 mr-2" />
+                My Proposals
+              </Button>
+              <Button 
+                onClick={() => navigate('/templates')}
+                className="glass-button"
+                size="sm"
+              >
+                <BookOpen className="h-4 w-4 mr-2" />
+                Templates
+              </Button>
+              <Button 
+                onClick={() => navigate('/portfolio')}
+                className="glass-button"
+                size="sm"
+              >
+                <Briefcase className="h-4 w-4 mr-2" />
+                Portfolio
+              </Button>
+            </div>
           </div>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Input Section */}
           <div className="space-y-6">
-            <Card className="glass-card border-white/30 bg-white/20 backdrop-blur-md">
+            <Card className="glass-card">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="h-5 w-5" />
@@ -143,7 +167,7 @@ const JobAnalyzer = () => {
             {analysis && (
               <>
                 {/* Skills & Requirements */}
-                <Card className="glass-card border-white/30 bg-white/20 backdrop-blur-md">
+                <Card className="glass-card">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-lg">
                       <Target className="h-5 w-5" />
@@ -153,7 +177,7 @@ const JobAnalyzer = () => {
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
                       {analysis.skills.map((skill, index) => (
-                        <Badge key={index} variant="secondary" className="bg-white/30 border-white/30 hover:bg-white/40">
+                        <Badge key={index} variant="secondary" className="bg-blue-100/50 text-blue-700 border-blue-200/50 hover:bg-blue-100/70">
                           {skill}
                         </Badge>
                       ))}
@@ -162,7 +186,7 @@ const JobAnalyzer = () => {
                 </Card>
 
                 {/* Project Details */}
-                <Card className="glass-card border-white/30 bg-white/20 backdrop-blur-md">
+                <Card className="glass-card">
                   <CardHeader>
                     <CardTitle className="text-lg">Project Overview</CardTitle>
                   </CardHeader>
@@ -196,7 +220,7 @@ const JobAnalyzer = () => {
                 </Card>
 
                 {/* Risks & Notes */}
-                <Card className="glass-card border-white/30 bg-white/20 backdrop-blur-md">
+                <Card className="glass-card">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-lg">
                       <AlertTriangle className="h-5 w-5" />
@@ -218,17 +242,27 @@ const JobAnalyzer = () => {
                 {/* Generate Proposal Button */}
                 <Button 
                   onClick={generateProposal}
+                  disabled={isGenerating}
                   className="glass-primary w-full"
                   size="lg"
                 >
-                  <Sparkles className="h-5 w-5 mr-2" />
-                  Generate Professional Proposal
+                  {isGenerating ? (
+                    <>
+                      <Sparkles className="h-5 w-5 mr-2 animate-spin" />
+                      Generating Proposal...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="h-5 w-5 mr-2" />
+                      Generate Professional Proposal
+                    </>
+                  )}
                 </Button>
               </>
             )}
             
             {!analysis && !isAnalyzing && (
-              <Card className="glass-card border-white/30 bg-white/20 backdrop-blur-md">
+              <Card className="glass-card">
                 <CardContent className="flex items-center justify-center h-40">
                   <p className="text-muted-foreground text-center">
                     Paste a job post and click "Analyze" to see the breakdown
