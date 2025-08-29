@@ -11,7 +11,6 @@ import Portfolio from "./pages/Portfolio";
 import PublicProposal from "./pages/PublicProposal";
 import NotFound from "./pages/NotFound";
 import FloatingBubbles from "./components/FloatingBubbles";
-import FloatingChat from "./components/FloatingChat";
 
 const queryClient = new QueryClient();
 
@@ -34,7 +33,6 @@ const App = () => (
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
-            <FloatingChat />
           </BrowserRouter>
         </div>
       </div>
