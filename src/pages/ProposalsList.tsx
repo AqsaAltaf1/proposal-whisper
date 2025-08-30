@@ -63,23 +63,23 @@ const ProposalsList = () => {
   };
 
   return (
-    <div className="min-h-screen p-6">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <div className="min-h-screen p-4 sm:p-6">
+      <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-4">
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={() => navigate('/')}
-              className="glass-button"
+              className="glass-button self-start"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Home
             </Button>
             <div>
-              <h1 className="text-3xl font-bold">My Proposals</h1>
-              <p className="text-muted-foreground">
+              <h1 className="text-2xl sm:text-3xl font-bold">My Proposals</h1>
+              <p className="text-sm sm:text-base text-muted-foreground">
                 Manage and track your freelancer proposals
               </p>
             </div>
@@ -95,48 +95,48 @@ const ProposalsList = () => {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
           <Card className="glass-card">
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-blue-100/50 rounded-2xl">
                   <FileText className="h-6 w-6" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">{proposals.length}</p>
-                  <p className="text-sm text-muted-foreground">Total Proposals</p>
+                  <p className="text-xl sm:text-2xl font-bold">{proposals.length}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Total Proposals</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card className="glass-card">
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-green-100/70 rounded-2xl">
                   <User className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">
+                  <p className="text-xl sm:text-2xl font-bold">
                     {proposals.filter(p => p.status === 'shared').length}
                   </p>
-                  <p className="text-sm text-muted-foreground">Shared</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Shared</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card className="glass-card">
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-yellow-100/70 rounded-2xl">
                   <Calendar className="h-6 w-6 text-yellow-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">
+                  <p className="text-xl sm:text-2xl font-bold">
                     {proposals.filter(p => p.status === 'draft').length}
                   </p>
-                  <p className="text-sm text-muted-foreground">Drafts</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Drafts</p>
                 </div>
               </div>
             </CardContent>
@@ -165,15 +165,15 @@ const ProposalsList = () => {
                 </Button>
               </div>
             ) : (
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto -mx-2 sm:mx-0">
                 <Table>
                   <TableHeader>
                     <TableRow className="border-white/30 hover:bg-white/20">
-                      <TableHead className="text-foreground">Job Title</TableHead>
-                      <TableHead className="text-foreground">Status</TableHead>
-                      <TableHead className="text-foreground">Created</TableHead>
-                      <TableHead className="text-foreground">Updated</TableHead>
-                      <TableHead className="text-foreground text-right">Actions</TableHead>
+                      <TableHead className="text-foreground min-w-[200px]">Job Title</TableHead>
+                      <TableHead className="text-foreground hidden sm:table-cell">Status</TableHead>
+                      <TableHead className="text-foreground hidden md:table-cell">Created</TableHead>
+                      <TableHead className="text-foreground hidden lg:table-cell">Updated</TableHead>
+                      <TableHead className="text-foreground text-right min-w-[100px]">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -184,14 +184,24 @@ const ProposalsList = () => {
                         onClick={() => navigate(`/proposal/${proposal.id}`)}
                       >
                         <TableCell>
-                          <div className="flex items-center gap-3">
-                            <div className="p-2 bg-blue-100/50 rounded-lg">
+                          <div className="flex items-center gap-2 sm:gap-3">
+                            <div className="p-2 bg-blue-100/50 rounded-lg hidden sm:block">
                               <FileText className="h-4 w-4" />
                             </div>
-                            <div>
-                              <p className="font-medium">{proposal.jobTitle}</p>
+                            <div className="min-w-0 flex-1">
+                              <p className="font-medium text-sm sm:text-base truncate">{proposal.jobTitle}</p>
+                              <div className="flex flex-col sm:hidden gap-1 mt-1">
+                                <Badge 
+                                  className={`${getStatusColor(proposal.status)} border-none w-fit text-xs`}
+                                >
+                                  {proposal.status.toUpperCase()}
+                                </Badge>
+                                <p className="text-xs text-muted-foreground">
+                                  {formatDate(proposal.createdAt)}
+                                </p>
+                              </div>
                               {proposal.clientSummary && (
-                                <p className="text-sm text-muted-foreground truncate max-w-xs">
+                                <p className="text-sm text-muted-foreground truncate max-w-[200px] hidden sm:block">
                                   {proposal.clientSummary}
                                 </p>
                               )}
@@ -199,7 +209,7 @@ const ProposalsList = () => {
                           </div>
                         </TableCell>
                         
-                        <TableCell>
+                        <TableCell className="hidden sm:table-cell">
                           <Badge 
                             className={`${getStatusColor(proposal.status)} border-none`}
                           >
@@ -207,16 +217,16 @@ const ProposalsList = () => {
                           </Badge>
                         </TableCell>
                         
-                        <TableCell className="text-muted-foreground">
+                        <TableCell className="text-muted-foreground hidden md:table-cell">
                           {formatDate(proposal.createdAt)}
                         </TableCell>
                         
-                        <TableCell className="text-muted-foreground">
+                        <TableCell className="text-muted-foreground hidden lg:table-cell">
                           {proposal.updatedAt ? formatDate(proposal.updatedAt) : '-'}
                         </TableCell>
                         
                         <TableCell>
-                          <div className="flex items-center justify-end gap-2">
+                          <div className="flex items-center justify-end gap-1 sm:gap-2">
                             <Button
                               size="sm"
                               variant="ghost"
@@ -224,9 +234,9 @@ const ProposalsList = () => {
                                 e.stopPropagation();
                                 navigate(`/proposal/${proposal.id}`);
                               }}
-                              className="glass-button"
+                              className="glass-button p-2"
                             >
-                              <Eye className="h-4 w-4" />
+                              <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
                             </Button>
                             
                             <Button
@@ -236,9 +246,9 @@ const ProposalsList = () => {
                                 e.stopPropagation();
                                 handleDeleteProposal(proposal.id);
                               }}
-                              className="glass-button hover:bg-red-500/20 hover:text-red-400"
+                              className="glass-button hover:bg-red-500/20 hover:text-red-400 p-2"
                             >
-                              <Trash2 className="h-4 w-4" />
+                              <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
                             </Button>
                           </div>
                         </TableCell>

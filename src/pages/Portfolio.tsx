@@ -185,23 +185,23 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="min-h-screen p-6">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <div className="min-h-screen p-4 sm:p-6">
+      <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-4">
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={() => navigate('/')}
-              className="glass-button"
+              className="glass-button self-start"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Home
             </Button>
             <div>
-              <h1 className="text-3xl font-bold">Portfolio</h1>
-              <p className="text-muted-foreground">
+              <h1 className="text-2xl sm:text-3xl font-bold">Portfolio</h1>
+              <p className="text-sm sm:text-base text-muted-foreground">
                 Showcase your best work to potential clients
               </p>
             </div>
@@ -303,23 +303,23 @@ const Portfolio = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {portfolioItems.map((item) => (
               <Card key={item.id} className="glass-card">
-                <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4">
-                  <div className="flex-1">
-                    <CardTitle className="text-lg leading-tight mb-2">{item.title}</CardTitle>
+                <CardHeader className="flex flex-col space-y-2 sm:flex-row sm:items-start sm:justify-between sm:space-y-0 pb-4">
+                  <div className="flex-1 min-w-0">
+                    <CardTitle className="text-base sm:text-lg leading-tight mb-2 break-words">{item.title}</CardTitle>
                     <div className="flex items-center gap-2 mb-2">
-                      <Code className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">{item.techStack}</span>
+                      <Code className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <span className="text-xs sm:text-sm text-muted-foreground truncate">{item.techStack}</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 self-start">
                     <Button
                       size="sm"
                       variant="ghost"
                       onClick={() => handleCopyItem(item)}
-                      className="glass-button"
+                      className="glass-button p-2"
                     >
                       <Copy className="h-3 w-3" />
                     </Button>
@@ -327,7 +327,7 @@ const Portfolio = () => {
                       size="sm"
                       variant="ghost"
                       onClick={() => handleEdit(item)}
-                      className="glass-button"
+                      className="glass-button p-2"
                     >
                       <Edit3 className="h-3 w-3" />
                     </Button>
@@ -335,18 +335,18 @@ const Portfolio = () => {
                       size="sm"
                       variant="ghost"
                       onClick={() => handleDelete(item.id)}
-                      className="glass-button hover:bg-red-500/20 hover:text-red-400"
+                      className="glass-button hover:bg-red-500/20 hover:text-red-400 p-2"
                     >
                       <Trash2 className="h-3 w-3" />
                     </Button>
                   </div>
                 </CardHeader>
                 
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-3 sm:space-y-4">
                   {/* Result */}
                   <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-3">
-                    <p className="text-sm text-green-400 font-medium mb-1">Impact</p>
-                    <p className="text-sm">{item.resultSnippet}</p>
+                    <p className="text-xs sm:text-sm text-green-400 font-medium mb-1">Impact</p>
+                    <p className="text-xs sm:text-sm break-words">{item.resultSnippet}</p>
                   </div>
 
                   {/* Link */}
@@ -357,7 +357,7 @@ const Portfolio = () => {
                           variant="ghost"
                           size="sm"
                           asChild
-                          className="glass-button w-full justify-start"
+                          className="glass-button w-full justify-start text-xs sm:text-sm"
                         >
                           <a 
                             href={item.link} 
@@ -370,9 +370,9 @@ const Portfolio = () => {
                           </a>
                         </Button>
                       ) : (
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <ExternalLink className="h-4 w-4" />
-                          <span className="truncate">{item.link}</span>
+                        <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                          <ExternalLink className="h-4 w-4 flex-shrink-0" />
+                          <span className="truncate break-all">{item.link}</span>
                         </div>
                       )}
                     </div>

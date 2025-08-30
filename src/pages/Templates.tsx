@@ -215,23 +215,23 @@ const Templates = () => {
   };
 
   return (
-    <div className="min-h-screen p-6">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <div className="min-h-screen p-4 sm:p-6">
+      <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-4">
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={() => navigate('/')}
-              className="glass-button"
+              className="glass-button self-start"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Home
             </Button>
             <div>
-              <h1 className="text-3xl font-bold">Proposal Templates</h1>
-              <p className="text-muted-foreground">
+              <h1 className="text-2xl sm:text-3xl font-bold">Proposal Templates</h1>
+              <p className="text-sm sm:text-base text-muted-foreground">
                 Create and manage reusable snippets for your proposals
               </p>
             </div>
@@ -322,50 +322,50 @@ const Templates = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {templates.map((template) => (
               <Card key={template.id} className="glass-card">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-                  <CardTitle className="text-lg">{template.name}</CardTitle>
-                  <div className="flex items-center gap-2">
+                  <CardTitle className="text-base sm:text-lg truncate pr-2">{template.name}</CardTitle>
+                  <div className="flex items-center gap-1 sm:gap-2">
                     <Button
                       size="sm"
                       variant="ghost"
                       onClick={() => handleEdit(template)}
-                      className="glass-button"
+                      className="glass-button p-2"
                     >
-                      <Edit3 className="h-4 w-4" />
+                      <Edit3 className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
                     <Button
                       size="sm"
                       variant="ghost"
                       onClick={() => handleDelete(template.id)}
-                      className="glass-button hover:bg-red-500/20 hover:text-red-400"
+                      className="glass-button hover:bg-red-500/20 hover:text-red-400 p-2"
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
                   </div>
                 </CardHeader>
                 
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-3 sm:space-y-4">
                   {/* Cover Letter Snippet */}
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <FileText className="h-4 w-4" />
-                        <Label className="text-sm font-medium">Cover Letter</Label>
+                        <Label className="text-xs sm:text-sm font-medium">Cover Letter</Label>
                       </div>
                       <Button
                         size="sm"
                         variant="ghost"
                         onClick={() => handleCopy(template.coverSnippet, 'Cover letter')}
-                        className="glass-button"
+                        className="glass-button p-2"
                       >
                         <Copy className="h-3 w-3" />
                       </Button>
                     </div>
                     <div className="bg-white/5 border border-white/10 rounded-xl p-3">
-                      <p className="text-sm text-muted-foreground line-clamp-3">
+                      <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3">
                         {template.coverSnippet || 'No cover letter snippet'}
                       </p>
                     </div>
@@ -376,19 +376,19 @@ const Templates = () => {
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <Target className="h-4 w-4" />
-                        <Label className="text-sm font-medium">Milestones</Label>
+                        <Label className="text-xs sm:text-sm font-medium">Milestones</Label>
                       </div>
                       <Button
                         size="sm"
                         variant="ghost"
                         onClick={() => handleCopy(template.milestoneSnippet, 'Milestone')}
-                        className="glass-button"
+                        className="glass-button p-2"
                       >
                         <Copy className="h-3 w-3" />
                       </Button>
                     </div>
                     <div className="bg-white/5 border border-white/10 rounded-xl p-3">
-                      <p className="text-sm text-muted-foreground line-clamp-3 whitespace-pre-line">
+                      <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 whitespace-pre-line">
                         {template.milestoneSnippet || 'No milestone snippet'}
                       </p>
                     </div>
